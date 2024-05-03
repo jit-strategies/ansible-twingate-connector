@@ -1,2 +1,6 @@
 ---
-# vars file for twingate-connector
+
+# These vars need to be defined in the playbook.
+# twingate_network: "your-network-name"
+# twingate_access_token: ""
+# twingate_refresh_token: ""

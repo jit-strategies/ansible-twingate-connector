@@ -1,2 +1,5 @@
 ---
-# defaults file for twingate-connector
+
+twingate_config_dir: "/etc/twingate"
+twingate_config_file: "{{ twingate_config_dir }}/connector.conf"
+twingate_url: "https://{{ twingate_network }}.twingate.com"

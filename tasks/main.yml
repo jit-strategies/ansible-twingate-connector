@@ -1,2 +1,39 @@
 ---
-# tasks file for twingate-connector
+
+- name: Check mandatory variables are defined
+  ansible.builtin.assert:
+    that:
+      - twingate_network is defined
+      - twingate_access_token is defined
+      - twingate_refresh_token is defined
+
+- name: Add apt repository for Twingate
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [trusted=true] https://packages.twingate.com/apt/ /
+    state: present
+
+- name: Install Twingate Connector
+  ansible.builtin.apt:
+    name: twingate-connector
+    state: present
+    update_cache: yes
+
+- name: Create Twingate configuration directory 
+  ansible.builtin.file:
+    path: "{{ twingate_config_dir }}"
+    state: directory
+    mode: '0700'
+
+- name: Create Twingate configuration file
+  ansible.builtin.template:
+    src: connector.conf.j2
+    dest: "{{ twingate_config_file }}"
+    mode: '0600'
+  notify: Restart Twingate Connector service
+
+- name: Start Twingate Connector service
+  ansible.builtin.systemd:
+    name: twingate-connector
+    state: started
+    enabled: yes

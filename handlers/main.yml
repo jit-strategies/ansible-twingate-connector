@@ -1,2 +1,7 @@
 ---
-# handlers file for twingate-connector
+
+- name: Restart Twingate Connector service
+  ansible.builtin.systemd:
+    name: twingate-connector
+    state: restarted
+    enabled: yes
